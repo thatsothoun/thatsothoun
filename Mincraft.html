@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steve's Portfolio - Minecraft Developer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    background: linear-gradient(135deg, #1a472a 0%, #1e3a8a 50%, #581c87 100%);
+    color: #ffffff;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Particle Background */
+.particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: float-particle 15s infinite linear;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translateY(100vh) translateX(0px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-10px) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Floating Blocks */
+.floating-blocks {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-block {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    animation: float-blocks 20s infinite ease-in-out;
+}
+
+.floating-block:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-block:nth-child(2) {
+    top: 20%;
+    right: 10%;
+    animation-delay: 4s;
+}
+
+.floating-block:nth-child(3) {
+    top: 60%;
+    left: 5%;
+    animation-delay: 8s;
+}
+
+.floating-block:nth-child(4) {
+    bottom: 20%;
+    right: 20%;
+    animation-delay: 12s;
+}
+
+.floating-block:nth-child(5) {
+    bottom: 10%;
+    left: 20%;
+    animation-delay: 16s;
+}
+
+@keyframes float-blocks {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-20px) rotate(90deg);
+    }
+    50% {
+        transform: translateY(-40px) rotate(180deg);
+    }
+    75% {
+        transform: translateY(-20px) rotate(270deg);
+    }
+}
+
+/* Minecraft Blocks */
+.minecraft-block {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+}
+
+.minecraft-block.small {
+    width: 30px;
+    height: 30px;
+}
+
+.minecraft-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        inset 0 0 10px rgba(255, 255, 255, 0.2),
+        0 0 20px rgba(0, 0, 0, 0.5),
+        0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Block Types */
+.grass-block::before {
+    background: linear-gradient(45deg, #8bc34a 25%, #689f38 25%, #689f38 50%, #8bc34a 50%, #8bc34a 75%, #689f38 75%);
+    background-size: 8px 8px;
+}
+
+.stone-block::before {
+    background: linear-gradient(45deg, #9e9e9e 25%, #757575 25%, #757575 50%, #9e9e9e 50%, #9e9e9e 75%, #757575 75%);
+    background-size: 6px 6px;
+}
+
+.diamond-block::before {
+    background: linear-gradient(45deg, #3b82f6 25%, #1d4ed8 25%, #1d4ed8 50%, #3b82f6 50%, #3b82f6 75%, #1d4ed8 75%);
+    background-size: 10px 10px;
+}
+
+.redstone-block::before {
+    background: linear-gradient(45deg, #ef4444 25%, #dc2626 25%, #dc2626 50%, #ef4444 50%, #ef4444 75%, #dc2626 75%);
+    background-size: 8px 8px;
+}
+
+.emerald-block::before {
+    background: linear-gradient(45deg, #10b981 25%, #059669 25%, #059669 50%, #10b981 50%, #10b981 75%, #059669 75%);
+    background-size: 8px 8px;
+}
+
+.gold-block::before {
+    background: linear-gradient(45deg, #f59e0b 25%, #d97706 25%, #d97706 50%, #f59e0b 50%, #f59e0b 75%, #d97706 75%);
+    background-size: 8px 8px;
+}
+
+/* Block Animations */
+.animate-float {
+    animation: block-float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: block-float 6s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+.animate-float-slow {
+    animation: block-float 8s ease-in-out infinite;
+    animation-delay: 4s;
+}
+
+.rotate-3d {
+    animation: rotate-3d 10s linear infinite;
+}
+
+.rotate-3d-delayed {
+    animation: rotate-3d 10s linear infinite;
+    animation-delay: 5s;
+}
+
+.bounce {
+    animation: bounce-block 2s ease-in-out infinite;
+}
+
+.bounce-delayed {
+    animation: bounce-block 2s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.bounce-slow {
+    animation: bounce-block 3s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+@keyframes block-float {
+    0%, 100% {
+        transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotateX(180deg) rotateY(180deg);
+    }
+}
+
+@keyframes rotate-3d {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+}
+
+@keyframes bounce-block {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+}
+
+.header.scrolled {
+    background: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-brand {
+    z-index: 1001;
+}
+
+.minecraft-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #10b981;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 1rem;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #10b981;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+.nav-link:hover {
+    color: #10b981;
+    transform: translateY(-2px);
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.nav-toggle span {
+    width: 25px;
+    height: 3px;
+    background: #ffffff;
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero-blocks {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #10b981, #3b82f6, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+    animation: title-glow 3s ease-in-out infinite alternate;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    color: #9ca3af;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@keyframes title-glow {
+    0% {
+        text-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+    }
+    100% {
+        text-shadow: 0 0 50px rgba(59, 130, 246, 0.5), 0 0 70px rgba(239, 68, 68, 0.3);
+    }
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #10b981, #059669);
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #10b981;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* Sections */
+section {
+    padding: 100px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.section-title {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 4rem;
+    color: #10b981;
+    text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* About Section */
+.about {
+    background: rgba(17, 24, 39, 0.3);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.about-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.about-text h3 {
+    font-size: 2rem;
+    color: #10b981;
+    margin-bottom: 1.5rem;
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #d1d5db;
+    margin-bottom: 1.5rem;
+}
+
+.stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #10b981;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #9ca3af;
+}
+
+/* Projects Section */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background: rgba(17, 24, 39, 0.8);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    cursor: pointer;
+}
+
+.project-card:hover {
+    transform: translateY(-10px) rotateX(5deg);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.project-image {
+    height: 200px;
+    background: linear-gradient(45deg, #1f2937, #374151);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-content {
+    padding: 1.5rem;
+}
+
+.project-content h3 {
+    font-size: 1.3rem;
+    color: #10b981;
+    margin-bottom: 1rem;
+}
+
+.project-content p {
+    color: #d1d5db;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.project-tech {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.tech-tag {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Skills Section */
+.skills {
+    background: rgba(17, 24, 39, 0.3);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.skill-block {
+    background: rgba(17, 24, 39, 0.8);
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.skill-block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.skill-icon {
+    margin: 0 auto 1rem;
+}
+
+.skill-block h3 {
+    color: #10b981;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.skill-block p {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.skill-bar {
+    background: rgba(55, 65, 81, 0.5);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.skill-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    border-radius: 3px;
+    width: 0%;
+    transition: width 2s ease-out;
+    animation: skill-glow 2s infinite alternate;
+}
+
+@keyframes skill-glow {
+    0% {
+        box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.8);
+    }
+}
+
+/* Contact Section */
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.contact-info h3 {
+    font-size: 2rem;
+    color: #10b981;
+    margin-bottom: 1rem;
+}
+
+.contact-info p {
+    color: #d1d5db;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.contact-blocks {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.contact-details {
+    margin-top: 2rem;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.contact-label {
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.contact-value {
+    color: #10b981;
+    font-weight: 500;
+}
+
+/* Contact Form */
+.contact-form {
+    background: rgba(17, 24, 39, 0.8);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(55, 65, 81, 0.5);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Orbitron', monospace;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.form-group label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: #9ca3af;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.form-group input:focus + label,
+.form-group select:focus + label,
+.form-group textarea:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group select:not([value=""]) + label,
+.form-group textarea:not(:placeholder-shown) + label {
+    top: -0.5rem;
+    left: 0.5rem;
+    font-size: 0.8rem;
+    color: #10b981;
+    background: rgba(17, 24, 39, 1);
+    padding: 0 0.5rem;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Footer */
+.footer {
+    background: rgba(17, 24, 39, 0.9);
+    padding: 2rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer-blocks {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer p {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        background: rgba(17, 24, 39, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: left 0.3s ease;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-toggle.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-blocks {
+        gap: 1rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .stats {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .minecraft-block {
+        width: 40px;
+        height: 40px;
+    }
+
+    .floating-blocks .floating-block {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .minecraft-block {
+        width: 30px;
+        height: 30px;
+    }
+
+    .hero-blocks .minecraft-block {
+        width: 50px;
+        height: 50px;
+    }
+}
+  
+    </style>
+    <script>
+        // Particle System
+class ParticleSystem {
+    constructor() {
+        this.particles = [];
+        this.particleCount = 50;
+        this.container = document.getElementById('particles');
+        this.init();
+    }
+
+    init() {
+        for (let i = 0; i < this.particleCount; i++) {
+            this.createParticle();
+        }
+    }
+
+    createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const colors = ['#10b981', '#3b82f6', '#ef4444', '#f59e0b'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.animationDelay = Math.random() * 10 + 's';
+        
+        this.container.appendChild(particle);
+        this.particles.push(particle);
+
+        // Remove and recreate particle after animation
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+                this.createParticle();
+            }
+        }, (parseFloat(particle.style.animationDuration) + parseFloat(particle.style.animationDelay)) * 1000);
+    }
+}
+
+// Header Scroll Effect
+class HeaderController {
+    constructor() {
+        this.header = document.getElementById('header');
+        this.init();
+    }
+
+    init() {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                this.header.classList.add('scrolled');
+            } else {
+                this.header.classList.remove('scrolled');
+            }
+        });
+    }
+}
+
+// Mobile Navigation
+class NavigationController {
+    constructor() {
+        this.navToggle = document.getElementById('nav-toggle');
+        this.navMenu = document.getElementById('nav-menu');
+        this.navLinks = document.querySelectorAll('.nav-link');
+        this.init();
+    }
+
+    init() {
+        this.navToggle.addEventListener('click', () => {
+            this.toggleMobileMenu();
+        });
+
+        this.navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                this.closeMobileMenu();
+            });
+        });
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            if (!this.navToggle.contains(e.target) && !this.navMenu.contains(e.target)) {
+                this.closeMobileMenu();
+            }
+        });
+    }
+
+    toggleMobileMenu() {
+        this.navMenu.classList.toggle('active');
+        this.navToggle.classList.toggle('active');
+        document.body.style.overflow = this.navMenu.classList.contains('active') ? 'hidden' : 'auto';
+    }
+
+    closeMobileMenu() {
+        this.navMenu.classList.remove('active');
+        this.navToggle.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// Smooth Scrolling
+class SmoothScroll {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    const headerHeight = document.getElementById('header').offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    }
+}
+
+// Intersection Observer for Animations
+class AnimationController {
+    constructor() {
+        this.observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        this.init();
+    }
+
+    init() {
+        this.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateElement(entry.target);
+                }
+            });
+        }, this.observerOptions);
+
+        // Observe skill blocks for progress bar animation
+        document.querySelectorAll('.skill-block').forEach(skill => {
+            this.observer.observe(skill);
+        });
+
+        // Observe project cards for stagger animation
+        document.querySelectorAll('.project-card').forEach((card, index) => {
+            this.observer.observe(card);
+            card.style.animationDelay = `${index * 0.2}s`;
+        });
+
+        // Observe other animated elements
+        document.querySelectorAll('[data-animate]').forEach(element => {
+            this.observer.observe(element);
+        });
+    }
+
+    animateElement(element) {
+        if (element.classList.contains('skill-block')) {
+            this.animateSkillBar(element);
+        }
+        
+        element.style.opacity = '1';
+        element.style.transform = 'translateY(0)';
+    }
+
+    animateSkillBar(skillBlock) {
+        const progressBar = skillBlock.querySelector('.skill-progress');
+        const skillLevel = skillBlock.getAttribute('data-skill');
+        
+        if (progressBar && skillLevel) {
+            setTimeout(() => {
+                progressBar.style.width = skillLevel + '%';
+            }, 500);
+        }
+    }
+}
+
+// 3D Tilt Effect for Project Cards
+class TiltEffect {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        document.querySelectorAll('[data-tilt]').forEach(element => {
+            element.addEventListener('mousemove', this.handleMouseMove.bind(this));
+            element.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+        });
+    }
+
+    handleMouseMove(e) {
+        const element = e.currentTarget;
+        const rect = element.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / centerY * -10;
+        const rotateY = (x - centerX) / centerX * 10;
+        
+        element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
+    }
+
+    handleMouseLeave(e) {
+        const element = e.currentTarget;
+        element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+    }
+}
+
+// Contact Form Handler
+class ContactForm {
+    constructor() {
+        this.form = document.getElementById('contact-form');
+        this.init();
+    }
+
+    init() {
+        if (this.form) {
+            this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        }
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this.form);
+        const data = Object.fromEntries(formData);
+        
+        // Show loading state
+        const submitBtn = this.form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+        
+        // Simulate form submission (replace with actual form handling)
+        setTimeout(() => {
+            this.showSuccessMessage();
+            this.form.reset();
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }, 2000);
+    }
+
+    showSuccessMessage() {
+        // Create success notification
+        const notification = document.createElement('div');
+        notification.className = 'success-notification';
+        notification.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(45deg, #10b981, #059669);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+                z-index: 9999;
+                animation: slideInRight 0.5s ease;
+            ">
+                ✅ Message sent successfully! I'll get back to you soon.
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+}
+
+// Mouse Cursor Effect
+class CursorEffect {
+    constructor() {
+        this.cursor = null;
+        this.cursorTrail = [];
+        this.init();
+    }
+
+    init() {
+        // Create custom cursor
+        this.cursor = document.createElement('div');
+        this.cursor.className = 'custom-cursor';
+        this.cursor.style.cssText = `
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(16, 185, 129, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        `;
+        document.body.appendChild(this.cursor);
+
+        document.addEventListener('mousemove', (e) => {
+            this.cursor.style.left = e.clientX - 10 + 'px';
+            this.cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        // Cursor interactions
+        document.querySelectorAll('a, button, [data-tilt]').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                this.cursor.style.transform = 'scale(1.5)';
+                this.cursor.style.background = 'rgba(59, 130, 246, 0.8)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                this.cursor.style.transform = 'scale(1)';
+                this.cursor.style.background = 'rgba(16, 185, 129, 0.8)';
+            });
+        });
+    }
+}
+
+// Performance Optimization
+class PerformanceOptimizer {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        // Lazy load images
+        this.lazyLoadImages();
+        
+        // Optimize animations on scroll
+        this.throttleScrollAnimations();
+        
+        // Preload critical resources
+        this.preloadResources();
+    }
+
+    lazyLoadImages() {
+        const images = document.querySelectorAll('img[data-src]');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        images.forEach(img => imageObserver.observe(img));
+    }
+
+    throttleScrollAnimations() {
+        let ticking = false;
+        
+        const updateAnimations = () => {
+            // Update particle positions or other scroll-based animations
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        });
+    }
+
+    preloadResources() {
+        // Preload fonts
+        const fontLinks = [
+            'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap'
+        ];
+
+        fontLinks.forEach(href => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'style';
+            link.href = href;
+            document.head.appendChild(link);
+        });
+    }
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new ParticleSystem();
+    new HeaderController();
+    new NavigationController();
+    new SmoothScroll();
+    new AnimationController();
+    new TiltEffect();
+    new ContactForm();
+    new CursorEffect();
+    new PerformanceOptimizer();
+
+    // Add loading animation
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+// Add CSS animations keyframes dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes fadeInUp {
+        0% {
+            transform: translateY(30px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .skill-block {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+    
+    .project-card {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+`;
+document.head.appendChild(style);
+    </script>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particle-container" id="particles"></div>
+    
+    <!-- Floating Blocks -->
+    <div class="floating-blocks">
+        <div class="floating-block grass-block"></div>
+        <div class="floating-block stone-block"></div>
+        <div class="floating-block diamond-block"></div>
+        <div class="floating-block redstone-block"></div>
+        <div class="floating-block emerald-block"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <div class="minecraft-logo">Thounzz</div>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-blocks">
+                <div class="minecraft-block grass-block animate-float"></div>
+                <div class="minecraft-block stone-block animate-float-delayed"></div>
+                <div class="minecraft-block diamond-block animate-float-slow"></div>
+            </div>
+                            <img src="dream.png" alt="">
+
+            <h1 class="hero-title">Thounzz</h1>
+            <h2 class="hero-subtitle">software & full-stack developer</h2>
+            <p class="hero-description">Build the skill and Relax </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-blocks">
+                    <div class="minecraft-block emerald-block rotate-3d"></div>
+                    <div class="minecraft-block redstone-block rotate-3d-delayed"></div>
+                </div>
+                <div class="about-text">
+                    <h3>Building Software developer</h3>
+                                      <p>Hello  welcome to me   . I'm That Sothoun  , The major  is software developer    ,   I'm Study at  Setec instute "Year 1 " . Thank you for watching this profilio website  good luck all programming .Thank ....! </p>
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Projects Built</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Clients</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">2</span>
+                            <span class="stat-label">Deploy website</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2 class="section-title"> Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card" data-tilt>
+                    <div class="project-image">
+                        <div class="minecraft-block diamond-block"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>c++</h3>
+                        <p> C++ project focused on efficient algorithms and system-level programming. Features include optimized data structures, memory management, and cross-platform compatibility.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Basic </span>
+                            <span class="tech-tag">advanced</span>
+                            <span class="tech-tag">Real Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-tilt>
+                    <div class="project-image">
+                        <div class="minecraft-block redstone-block"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>HTML</h3>
+                        <p>Build The project Html Login_page  and add  alert the message   .   Html _login form .Thank You !!!</p>
+                        <div class="project-tech">
+                           <span class="tech-tag">Basic </span>
+                            <span class="tech-tag">advanced</span>
+                            <span class="tech-tag">Real Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-tilt>
+                    <div class="project-image">
+                        <div class="minecraft-block emerald-block"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>CSS
+
+                        </h3>
+                        <p>Build the Project Css and add the Property How to add to  background color  .  Example background-linear  .  Thank you !!!</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Basic </span>
+                            <span class="tech-tag">advanced</span>
+                            <span class="tech-tag">Real Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-tilt>
+                    <div class="project-image">
+                        <div class="minecraft-block grass-block"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Web design </h3>
+                        <p>Build the web design use the clone code html css and JavaScript code .Thank You !!</p>
+                        <div class="project-tech">
+                           <span class="tech-tag">Basic </span>
+                            <span class="tech-tag">advanced</span>
+                            <span class="tech-tag">Real Project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <div class="container">
+            <h2 class="section-title">My Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-block" data-skill="95">
+                    <div class="minecraft-block diamond-block skill-icon"></div>
+                    <h3>Tool alight motion</h3>
+                    <p>Make the video and add the video  style editor .</p>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="95"></div>
+                    </div>
+                </div>
+
+                <div class="skill-block" data-skill="90">
+                    <div class="minecraft-block redstone-block skill-icon"></div>
+                    <h3>Html &Css</h3>
+                    <p> Build the Project use the code html css for design the websign .</p>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="90"></div>
+                    </div>
+                </div>
+
+                <div class="skill-block" data-skill="85">
+                    <div class="minecraft-block emerald-block skill-icon"></div>
+                    <h3>C/C++</h3>
+                    <p>Just Like the syntax code prinf & cout. Thank you  </p>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="85"></div>
+                    </div>
+                </div>
+
+                <div class="skill-block" data-skill="80">
+                    <div class="minecraft-block grass-block skill-icon"></div>
+                    <h3>Computer Setting </h3>
+                    <p>Linux , Vitural Box ,  vmware m ,  create new machine .</p>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="80"></div>
+                    </div>
+                </div>
+
+                <div class="skill-block" data-skill="88">
+                    <div class="minecraft-block stone-block skill-icon"></div>
+                    <h3>Web Design</h3>
+                    <p>Learn design Web development   .  Build the real project </p>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="88"></div>
+                    </div>
+                </div>
+
+                <div class="skill-block" data-skill="92">
+                    <div class="minecraft-block gold-block skill-icon"></div>
+                    <h3>React Js </h3>
+                    <p>Learn the framwork . let build the dynamic webste .</p>
+                    <div class="skill-bar">
+                        <div class="skill-progress" data-width="92"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Send a Message </h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let go to build project and contact with me </h3>
+                     <p>Hello welcome to me , If you need  me   , you can contact my this  profilio   ,  Good luck . Thank You EveryOne.................!</p>                    
+                    <div class="contact-blocks">
+                        <div class="minecraft-block diamond-block bounce"></div>
+                        <div class="minecraft-block emerald-block bounce-delayed"></div>
+                        <div class="minecraft-block redstone-block bounce-slow"></div>
+                    </div>
+
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="contact-label">Email:</span>
+                            <span   class="contact-value"><a  onclick="alert('sothounthat@gmai.com')" style="color: #10b981;" href="https://sothounthat@gmail.com">sothounthat@gmail.com</a></span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Telegram:</span>
+                          
+                                <a href="https://t.me/thatsothoun"></a>
+                           <span class="contact-value"><a style="color: #10b981;" href="https://t.me/thatsothoun" onclick="alert('https://t.me/thatsothoun')">That Sothoun</a></span>
+                            
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-label">Adress:</span>
+                            <span class="contact-value"><a style="color: #06b17b;" href="https://maps.google.com/maps?q=11.569107,104.881708&ll=11.569107,104.881708&z=16" onclick="alert('https://maps.google.com/maps?q=11.569107,104.881708&ll=11.569107,104.881708&z=16')">Phnom Penh  / Cambodia</a> </span>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="project-type" name="project-type" required>
+                            <option value=""> Project Type</option>
+                            <option value="plugin">full-stack Development</option>
+                            <option value="server">JavaSpring Boot </option>
+                            <option value="building">Design UI </option>
+                            <option value="consultation">Mobile app , web app , Fluter </option>
+                        </select>
+                        <label for="project-type">Project Type</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
+                        <label for="message">Message</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-blocks">
+                    <div class="minecraft-block grass-block small"></div>
+                    <div class="minecraft-block stone-block small"></div>
+                    <div class="minecraft-block diamond-block small"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
